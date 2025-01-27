@@ -14,6 +14,12 @@ topics:\
 
 `kafka-topics --delete --topic gps_data emergency_data --bootstrap-server broker:29092`
 
+kafka-topics --delete --topic gps_data --bootstrap-server broker:29092
+kafka-topics --delete --topic vehicle_data --bootstrap-server broker:29092
+kafka-topics --delete --topic emergency_data --bootstrap-server broker:29092
+kafka-topics --delete --topic traffic_data --bootstrap-server broker:29092
+kafka-topics --delete --topic weather_data --bootstrap-server broker:29092
+
 Submitting jobs:\
 `docker exec -it smart-city-spark-master-1 spark-submit \
 --master spark://spark-master:7077 \

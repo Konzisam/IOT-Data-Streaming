@@ -120,7 +120,9 @@ def main():
     query5 = streamWriter(emergencyDF, 's3a://streaming-spark/checkpoints/emergency_data',
                  's3a://streaming-spark/data/emergency_data')
 
-    query5.awaitTermination()
+    queries = [query1, query2, query3, query4, query5]
+    for query in queries:
+        query.awaitTermination()
 
 
 if __name__ == "__main__":

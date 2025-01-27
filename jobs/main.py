@@ -3,7 +3,6 @@ import time
 import uuid
 from re import error
 
-
 from confluent_kafka import SerializingProducer
 import simplejson as json
 from datetime import datetime, timedelta
@@ -66,7 +65,6 @@ def generate_vehicle_data(device_id):
         'fuelType': 'Hybrid'
     }
 
-
 def generate_gps_data(device_id, timestamp, vehicle_type='private'):
     return {
         'id': uuid.uuid4(),
@@ -111,6 +109,7 @@ def generate_emergency_incident_data(device_id, timestamp, location):
         'status': random.choice(['Active', 'Resolved']),
         'description': 'Description of the Incident'
     }
+
 def json_serializer(obj):
     if isinstance(obj, uuid.UUID):
         return str(obj)
@@ -146,7 +145,6 @@ def simulate_journey(producer, device_id):
             print('Vehicle has reached Birmingham. Simulation ended...')
             break
 
-
         produce_data_to_kafka(producer, VEHICLE_TOPIC, vehicle_data)
         produce_data_to_kafka(producer, GPS_TOPIC, gps_data)
         produce_data_to_kafka(producer, TRAFFIC_TOPIC, traffic_camera_data)
@@ -161,6 +159,8 @@ if __name__ == "__main__":
         'error_cb': lambda err: print(f'kafka error: {err}')
     }
     producer = SerializingProducer(producer_config)
+
+    # producer_manager = KafkaProducerManager(producer_config)
 
     try:
         simulate_journey(producer, 'Vehicle-Samkons')
