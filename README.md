@@ -84,9 +84,11 @@ This will bring up the Kafka and Zookeeper containers.Kafka broker will be avail
 5. There are two steps in starting the production and consumption of data:
 
 ✅ Running the simulation for kafka to produce the data
+
 ```python -m src.simulation.main```
 
 ✅ Running dlt to consume from kafka and write to duckDb/Snowflake. 
+
 ```python -m src.pipelines.dlt_pipelines```
 
 If  running with DuckDB, an iot_service.duckdb file will be created in the root directory, allowing for querying using a tool like DBeaver.
@@ -136,27 +138,29 @@ _dlt consumes the data with an append strategy to the database. The idea is to h
 ## Key Learnings:
 1. Simplified Data Pipeline with DLT and Kafka:
 
-✅ Switching from Spark to DLT simplified the pipeline. The is no longer need to manage Spark workers, and schema evolution is handled automatically.
+- Switching from Spark to DLT simplified the pipeline. The is no longer need to manage Spark workers, and schema evolution is handled automatically.
 
 2. Efficient Local Analytics with DuckDB:
 
-✅ DuckDB enables fast, local analytics without the need for additional infrastructure. It processes large datasets efficiently, reducing both setup time and costs.
+-  DuckDB enables fast, local analytics without the need for additional infrastructure. It processes large datasets efficiently, reducing both setup time and costs.
 
 3. Seamless Integration with Snowflake:
 
-✅ dlt integrates well with Snowflake for scalable cloud storage, enabling smooth data transfers and analytics at scale(ofcourse with proper setup).
+- dlt integrates well with Snowflake for scalable cloud storage, enabling smooth data transfers and analytics at scale(ofcourse with proper setup).
 
 4. Non-Normalized Data Handling:
 
-✅ DLT allows me to store non-normalized IoT data when needed, making it easier to keep related data in a single table.
+- DLT allows me to store non-normalized IoT data when needed, making it easier to keep related data in a single table.
 
 
 ## Summary:
-✅ The integration of **DLT** for real-time data processing, **DuckDB** for efficient local analytics, and **Snowflake** for scalable cloud storage has streamlined the data pipeline. 
-✅ The switch to Snowflake DB is seamless with DLT, allowing easy data loading and management without complex configurations. 
-✅ This setup reduces infrastructure complexity whi
+- The integration of **DLT** for real-time data processing, **DuckDB** for efficient local analytics, and **Snowflake** for scalable cloud storage has streamlined the data pipeline. 
+
+- The switch to Snowflake DB is seamless with DLT, allowing easy data loading and management without complex configurations. 
+
+- This setup reduces infrastructure complexity whi
 
 ## Areas for Improvement:
-✅ **Using an Orchestrator to Run DBT Models:** Incorporating an orchestrator like Airflow or Prefect could automate the scheduling and execution of DBT models, improving the overall pipeline management and reliability.
+- **Using an Orchestrator to Run DBT Models:** Incorporating an orchestrator like Airflow or Prefect could automate the scheduling and execution of DBT models, improving the overall pipeline management and reliability.
 
-✅ **Infrastructure as Code (IaC) for Snowflake Provisioning:** Adopting IaC tools like Terraform to provision Snowflake resources could ensure consistency, scalability, and easier management of cloud infrastructure.
+- **Infrastructure as Code (IaC) for Snowflake Provisioning:** Adopting IaC tools like Terraform to provision Snowflake resources could ensure consistency, scalability, and easier management of cloud infrastructure.
