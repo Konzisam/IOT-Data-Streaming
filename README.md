@@ -3,6 +3,11 @@ This project simulates connected vehicles streaming real-time IoT data, includin
 
 The data is sent to Kafka topics, enabling downstream analytical processing for optimization. This allows for efficient data handling and real-time insights.
 
+Data Architechture
+
+(https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
+
+
 ### 🌐 Overview
 In the context of connected vehicles, real-time IoT data must be efficiently captured and processed for analytics. In this case we have vehicle data;
 
