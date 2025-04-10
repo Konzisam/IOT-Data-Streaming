@@ -1,12 +1,11 @@
 ## 🛻 IOT Data Streaming with Kafka, DuckDB, dlt & Snowflake
 This project simulates connected vehicles streaming real-time IoT data, including GPS, weather, traffic incidents, and emergency alerts, all while following real-world routes. 
 
-The data is sent to Kafka topics, enabling downstream analytical processing for optimization. This allows for efficient data handling and real-time insights.
+The data is streamed to a central system for analytical use, enabling analysis of the events that happen in the journey.
 
 ## Data Architechture
 
 ![architechture](https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
-
 
 ### 🌐 Overview
 In the context of connected vehicles, real-time IoT data must be efficiently captured and processed for analytics. In this case we have vehicle data;
