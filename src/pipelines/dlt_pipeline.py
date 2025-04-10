@@ -8,7 +8,6 @@ from ..models.schema import (
     VehicleModel, GPSModel, TrafficModel, WeatherModel, EmergencyModel
 )
 
-# Setup basic logging
 logging.basicConfig(level=logging.DEBUG, format='[%(levelname)s] %(message)s')
 
 TOPIC_SCHEMA_MAP = {
@@ -67,11 +66,9 @@ def run_kafka_ingestion():
             batch_timeout=3,
         )
 
-        # Process data directly with DLT pipeline
-        logging.debug(f"Received data from Kafka: ")
 
         if data:
-            load_info = pipeline.run(data)
+            load_info = pipeline.run(data, write_disposition="append") # adjust accordingly
             if not load_info.load_packages:
                 logging.warning("No data was loaded — load_packages is empty.")
             else:

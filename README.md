@@ -1,20 +1,26 @@
 ## 🛻 IOT Data Streaming with Kafka, DuckDB, dlt & Snowflake
-This project simulates connected vehicles streaming real-time IoT data, including GPS, weather, traffic incidents, and emergency alerts, all while following real-world routes. The data is sent to Kafka topics, enabling downstream analytical processing for optimization. This allows for efficient data handling and real-time insights.
+This project simulates connected vehicles streaming real-time IoT data, including GPS, weather, traffic incidents, and emergency alerts, all while following real-world routes. 
+
+The data is sent to Kafka topics, enabling downstream analytical processing for optimization. This allows for efficient data handling and real-time insights.
 
 ### 🌐 Overview
-This Python-based project models an IoT ecosystem where smart vehicles transmit:
+In the context of connected vehicles, real-time IoT data must be efficiently captured and processed for analytics. In this case we have vehicle data;
 
-✅GPS Location
+🚘 Vehicle Data
 
-✅Vehicle Information
+📍 GPS coordinates
 
-✅Weather Conditions
+🚦 Traffic camera events
 
-✅Emergency Incident Data
+🌤️ Weather conditions
 
-✅ Traffic Camera Feeds
+🚨 Emergency alerts
 
-All data is streamed via Apache Kafka, and vehicle routes are based on real geographical paths using the OpenRouteService API.
+ The goal is to demonstrate how to stream and analyze this data in real-time to improve decision-making, optimize route planning, and enhance fleet management.
+
+By utilizing Apache Kafka for data streaming, DuckDB for fast, local analytics, and Snowflake for scalable cloud storage, this approach ensures that streaming data is efficiently captured and processed.
+
+The vehicle routes are based on real geographical paths using the **OpenRouteService API**.
 
 ⚙️ **Tech Stack**
 
@@ -28,26 +34,15 @@ All data is streamed via Apache Kafka, and vehicle routes are based on real geog
 
 
 ## 🧭 How It Works
-1. Simulated vehicles move between real cities (e.g. Potsdam → Leipzig).
+1. Simulated vehicles move between cities (e.g. Potsdam → Leipzig).
 
 2. They emit various IoT-style data streams:
 
-🚘 Vehicle telemetry
+3. DLT listens to Kafka, and loads batched data when run into:
 
-📍 GPS coordinates
+✅ DuckDB (local analytical DB for local testing)
 
-🚦 Traffic camera events
-
-🌤️ Weather conditions
-
-🚨 Emergency alerts
-
-
-4. DLT listens to Kafka, and directly loads the data into:
-
-✅ DuckDB (local analytical DB for quick testing)
-
-✅ Snowflake (cloud warehouse for broader querying)
+✅ Snowflake (cloud warehouse - production setup)
 
 ## 🚀 To replicate the project
 1. Clone the repo
@@ -86,7 +81,7 @@ docker-compose up -d
 ```
 This will bring up the Kafka and Zookeeper containers.Kafka broker will be available on localhost:9093.
 
-5. There are two steps in running:
+5. There are two steps in starting the production and consumption of data:
 
 ✅ Running the simulation for kafka to produce the data
 ```python -m src.simulation.main```
@@ -94,11 +89,9 @@ This will bring up the Kafka and Zookeeper containers.Kafka broker will be avail
 ✅ Running dlt to consume from kafka and write to duckDb/Snowflake. 
 ```python -m src.pipelines.dlt_pipelines```
 
-If you're running with DuckDB, an iot_service.duckdb file will be created in the root directory, allowing for querying using a tool like DBeaver.
+If  running with DuckDB, an iot_service.duckdb file will be created in the root directory, allowing for querying using a tool like DBeaver.
 
-
-
-_In my case I consumed in batch whereby dlt consumes the available data with an append strategy to the database. The idea is to have a case where dlt run on a schedule._
+_dlt consumes the data with an append strategy to the database. The idea is to have a scenario whereby the data streams continously and dlt is run on a schedule._
 
 📁 Project Structure
 ```
@@ -143,7 +136,7 @@ _In my case I consumed in batch whereby dlt consumes the available data with an 
 ## Key Learnings:
 1. Simplified Data Pipeline with DLT and Kafka:
 
-✅ Switching from Spark to DLT simplified the pipeline. I no longer need to manage Spark workers, and schema evolution is handled automatically.
+✅ Switching from Spark to DLT simplified the pipeline. The is no longer need to manage Spark workers, and schema evolution is handled automatically.
 
 2. Efficient Local Analytics with DuckDB:
 
@@ -151,23 +144,11 @@ _In my case I consumed in batch whereby dlt consumes the available data with an 
 
 3. Seamless Integration with Snowflake:
 
-✅ DuckDB integrates well with Snowflake for scalable cloud storage, enabling smooth data transfers and analytics at scale.
+✅ dlt integrates well with Snowflake for scalable cloud storage, enabling smooth data transfers and analytics at scale(ofcourse with proper setup).
 
-4. Real-time Data Processing with Kafka:
-
-✅ Kafka ensures reliable and consistent real-time data streaming, while DLT manages schema changes and data integrity automatically.
-
-5. Easy Data Management in DBeaver:
-
-✅ DBeaver simplifies database management by providing an intuitive interface to work with DuckDB and Snowflake. It helps in quickly querying and visualizing the data.
-
-6. Non-Normalized Data Handling:
+4. Non-Normalized Data Handling:
 
 ✅ DLT allows me to store non-normalized IoT data when needed, making it easier to keep related data in a single table.
-
-7. Scalability and Flexibility:
-
-✅ Using DuckDB for local data storage and Snowflake for scaling ensures flexibility. I can choose the right solution based on the dataset size.
 
 
 ## Summary:
