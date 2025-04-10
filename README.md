@@ -3,7 +3,7 @@ This project simulates connected vehicles streaming real-time IoT data, includin
 
 The data is sent to Kafka topics, enabling downstream analytical processing for optimization. This allows for efficient data handling and real-time insights.
 
-Data Architechture
+## Data Architechture
 
 ![architechture](https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
 
@@ -27,7 +27,7 @@ By utilizing Apache Kafka for data streaming, DuckDB for fast, local analytics, 
 
 The vehicle routes are based on real geographical paths using the **OpenRouteService API**.
 
-⚙️ **Tech Stack**
+### ⚙️ **Tech Stack**
 
 | Layer       | Technology                   | Purpose                                                 |
 |-------------|------------------------------|---------------------------------------------------------|
@@ -45,9 +45,9 @@ The vehicle routes are based on real geographical paths using the **OpenRouteSer
 
 3. DLT listens to Kafka, and loads batched data when run into:
 
-✅ DuckDB (local analytical DB for local testing)
+    ✅ DuckDB (local analytical DB for local testing)
 
-✅ Snowflake (cloud warehouse - production setup)
+    ✅ Snowflake (cloud warehouse - production setup)
 
 ## 🚀 To replicate the project
 1. Clone the repo
@@ -59,7 +59,7 @@ cd iot-data-streaming
 ```
 pip install -r requirements.txt
 ```
-3. Configure environment
+3. Configure environment and seup the environment variables.Here is a sample .env file.
 ```
 AWS_ACCESS_KEY_ID=''
 AWS_SECRET_ACCESS_KEY=''
@@ -84,15 +84,16 @@ DESTINATION__SNOWFLAKE__CREDENTIALS__ROLE=""
 ```
 docker-compose up -d
 ```
-This will bring up the Kafka and Zookeeper containers.Kafka broker will be available on localhost:9093.
+
+This will bring up the Kafka and Zookeeper containers. Kafka broker will be available on localhost:9093.
 
 5. There are two steps in starting the production and consumption of data:
 
-✅ Running the simulation for kafka to produce the data
+    ✅ Running the simulation for kafka to produce the data
 
 ```python -m src.simulation.main```
 
-✅ Running dlt to consume from kafka and write to duckDb/Snowflake. 
+    ✅ Running dlt to consume from kafka and write to duckDb/Snowflake. 
 
 ```python -m src.pipelines.dlt_pipelines```
 
@@ -134,12 +135,19 @@ _dlt consumes the data with an append strategy to the database. The idea is to h
 │   ├── test_generators.py
 │   ├── conftest.py              # Test fixtures
 │
-├── legacy/                      # Deprecated Spark pipeline code (not used) 
-│   ├── spark_streaming.py       
-│   ├── schemas.py
-│   └── main.py
+└──  legacy/                      # Deprecated Spark pipeline code (not used) 
+    ├── spark_streaming.py       
+    ├── schemas.py
+    └── main.py
 
 ```
+
+## View of the data
+
+Here is a view of the vehicle data in Dbeaver:
+![data](https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
+
+
 ## Key Learnings:
 1. Simplified Data Pipeline with DLT and Kafka:
 
@@ -161,9 +169,8 @@ _dlt consumes the data with an append strategy to the database. The idea is to h
 ## Summary:
 - The integration of **DLT** for real-time data processing, **DuckDB** for efficient local analytics, and **Snowflake** for scalable cloud storage has streamlined the data pipeline. 
 
-- The switch to Snowflake DB is seamless with DLT, allowing easy data loading and management without complex configurations. 
+- The switch to Snowflake DB is seamless with DLT, allowing easy data loading and management without complex configurations like when using spark.
 
-- This setup reduces infrastructure complexity whi
 
 ## Areas for Improvement:
 - **Using an Orchestrator to Run DBT Models:** Incorporating an orchestrator like Airflow or Prefect could automate the scheduling and execution of DBT models, improving the overall pipeline management and reliability.
