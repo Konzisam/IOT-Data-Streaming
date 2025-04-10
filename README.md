@@ -145,7 +145,7 @@ _dlt consumes the data with an append strategy to the database. The idea is to h
 ## View of the data
 
 Here is a view of the vehicle data in Dbeaver:
-![data](https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
+![data](https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/dbeaver.png)
 
 
 ## Key Learnings:
