@@ -5,7 +5,7 @@ The data is sent to Kafka topics, enabling downstream analytical processing for 
 
 Data Architechture
 
-(https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
+![architechture](https://github.com/Konzisam/IOT-Data-Streaming/blob/master/assets/architechture.png?raw=true)
 
 
 ### 🌐 Overview
