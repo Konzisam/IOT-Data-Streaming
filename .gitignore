@@ -1,2 +1,17 @@
 .env
 .idea/
+*.duckdb
+
+
+# Ignore all .pyc files
+*.pyc
+
+# Ignore __pycache__ directories
+__pycache__/
+
+# my test file
+try.py
+
+# others
+legacy/main.py
+legacy/spark-city.py

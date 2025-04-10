@@ -1,4 +1,5 @@
 import json
+import uuid
 from typing import Dict, Any, Optional
 from confluent_kafka import SerializingProducer, Message
 
@@ -8,7 +9,6 @@ class KafkaProducerManager:
         """
         Initializes the KafkaProducerManager with the given producer configuration.
 
-        :param producer_config: Configuration dictionary for SerializingProducer.
         """
         self.producer = SerializingProducer(producer_config)
 
@@ -17,12 +17,15 @@ class KafkaProducerManager:
         self.producer.produce(
             topic,
             key=str(data['id']),
-            value=json.dumps(data).encode('utf-8'),
-            on_delivery=lambda err, msg: print(
-                f"Delivery error: {err}" if err else f"Delivered: {msg.topic()}"
-            )
+            value=json.dumps(data, default=self.json_serializer).encode('utf-8'),
+            on_delivery= self.delivery_report
         )
         self.producer.flush()
+
+    def json_serializer(self, obj: Any) -> str:
+        if isinstance(obj, uuid.UUID):
+            return str(obj)
+        raise TypeError(f"Object of type {obj.__class__.__name__} is not JSOn serializable")
 
     @staticmethod
     def delivery_report(err: Optional[str], msg: Message) -> None:

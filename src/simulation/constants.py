@@ -1,4 +1,20 @@
 from enum import Enum
+import random
+
+class MakeModel(Enum):
+    """Enum for vehicle makes and their corresponding models."""
+    TOYOTA = ["Prius", "Corolla", "Camry", "Rav4"]
+    FORD = ["Focus", "F-150", "Mustang", "Escape"]
+    BMW = ["X5", "X3", "M3", "320i"]
+    HONDA = ["Civic", "Accord", "CR-V", "Fit"]
+    CHEVROLET = ["Malibu", "Silverado", "Tahoe", "Impala"]
+
+    @staticmethod
+    def get_random_make_and_model():
+        make = random.choice(list(MakeModel))
+        model = random.choice(make.value)
+        return make.name, model
+
 
 class FuelType(Enum):
     """Enum for vehicle fuel types."""
@@ -14,22 +30,6 @@ class Direction(Enum):
     NORTH_WEST = "North-West"
     SOUTH_EAST = "South-East"
 
-
-class Make(Enum):
-    """Enum for vehicle makes."""
-    TOYOTA = "Toyota"
-    FORD = "Ford"
-    BMW = "BMW"
-    HONDA = "Honda"
-    CHEVROLET = "Chevrolet"
-
-class Model(Enum):
-    """Enum for vehicle models."""
-    PRIUS = "Prius"
-    FOCUS = "Focus"
-    X5 = "X5"
-    CIVIC = "Civic"
-    MALIBU = "Malibu"
 
 class Weather(Enum):
     """Enum for the weather conditions"""
@@ -50,3 +50,4 @@ class EmergencyStatus(Enum):
     """Enum for Emergency status conditions"""
     ACTIVE = "Active"
     RESOLVED = "Resolved"
+

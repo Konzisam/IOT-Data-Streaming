@@ -1,18 +1,20 @@
 
-x-spark-common: &spark-common
-    image: bitnami/spark:latest
-    volumes:
-      - ./jobs/:/opt/bitnami/spark/jobs
-    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
-    depends_on:
-      - spark-master
-    environment:
-      SPARK_MODE: worker
-      SPARK_WORKER_CORES: 2
-      SPARK_WORKER_MEMORY: 1g
-      SPARK_MASTER_URL: spark://spark-master:7077
-    networks:
-      datamasterylab:
+#x-spark-common: &spark-common
+#    image: bitnami/spark:latest
+#    volumes:
+#      - ./jobs/:/opt/bitnami/spark/jobs
+#    command: bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+#    depends_on:
+#      - spark-master
+#    environment:
+#      SPARK_MODE: worker
+#      SPARK_WORKER_CORES: 2
+#      SPARK_WORKER_MEMORY: 1g
+#      SPARK_MASTER_URL: spark://spark-master:7077
+#    networks:
+#      datamasterylab:
+#    env_file:
+#      - .env
 
 services:
   zookeeper:
@@ -30,7 +32,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - datamasterylab
+      - samkons
   broker:
     image: confluentinc/cp-server:7.4.0
     hostname: broker
@@ -60,22 +62,22 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - datamasterylab
-  spark-master:
-    image: bitnami/spark:latest
-    volumes:
-      - ./jobs/:/opt/bitnami/spark/jobs
-    command: bin/spark-class org.apache.spark.deploy.master.Master
-    ports:
-      - "9090:8080"
-      - "7077:7077"
-    networks:
-      - datamasterylab
-  spark-worker-1:
-    <<: *spark-common
-  spark-worker-2:
-    <<: *spark-common
+      - samkons
+#  spark-master:
+#    image: bitnami/spark:latest
+#    volumes:
+#      - ./jobs/:/opt/bitnami/spark/jobs
+#    command: bin/spark-class org.apache.spark.deploy.master.Master
+#    ports:
+#      - "9090:8080"
+#      - "7077:7077"
+#    networks:
+#      - datamasterylab
+#  spark-worker-1:
+#    <<: *spark-common
+#  spark-worker-2:
+#    <<: *spark-common
 
 
 networks:
-  datamasterylab:
+  samkons:

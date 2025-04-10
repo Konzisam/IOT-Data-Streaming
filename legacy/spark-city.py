@@ -1,7 +1,7 @@
 from pyspark.sql.functions import col, from_json
 from pyspark.sql.types import StructType, StructField, StringType, TimestampType, DoubleType, IntegerType
 
-from config import configuration
+from src.config import configuration
 
 from pyspark.sql import SparkSession, DataFrame
 
@@ -96,6 +96,7 @@ def main():
                      .option('checkpointLocation', checkpointFolder)
                      .option('path', output)
                      .outputMode('append')
+                    # .trigger(processingTime='4 minute')
                      .start())
 
 
@@ -123,7 +124,6 @@ def main():
     queries = [query1, query2, query3, query4, query5]
     for query in queries:
         query.awaitTermination()
-
 
 if __name__ == "__main__":
     main()

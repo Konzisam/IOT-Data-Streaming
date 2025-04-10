@@ -3,7 +3,7 @@ from pyspark.sql.types import StructType, StructField, StringType, TimestampType
 class SchemaManager:
     """Manages  schemas for different kafka topics"""
     schemas = {
-        "vehicle_data": StructType([
+        "vehicle_schema": StructType([
         StructField("id", StringType(), True),
         StructField("device_Id", StringType(), True),
         StructField("timestamp", TimestampType(), True),

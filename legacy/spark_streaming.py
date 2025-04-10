@@ -1,12 +1,9 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.connect.dataframe import DataFrame
+from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import col, from_json
-from typing import Dict, Any
+from typing import Dict
+from legacy.schemas import SchemaManager
 
-from jobs.schemas import SchemaManager
-
-
-class SparkStremaingManager:
+class SparkStreamingManager:
     """Handles Pyspark Streaming Logic."""
     def __init__(self, kafka_servers: str, s3_config: Dict[str,str], log_level: str = 'WARN') -> None:
         self.spark = ((SparkSession.builder.appName('SmartCityStreaming'))
@@ -43,11 +40,23 @@ class SparkStremaingManager:
                 .select('data.*')
                 .withWatermark('timestamp', delayThreshold='2 minutes'))
 
-    def write_stream(self, dataframe: DataFrame, checkpoint_path: str, output_path: str) -> None:
+    def stream_writer(self, dataframe, checkpoint_path: str, output_path: str):
         """Writes data to S3 in Parquet format with streaming and checkpointing"""
-        dataframe.writeStream \
-            .format('parquet') \
-            .option('checkpointLocation', checkpoint_path) \
-            .option('path', output_path) \
-            .outputMode('append') \
-            .start()
+        try:
+            query = dataframe.writeStream \
+                .format('parquet') \
+                .option('checkpointLocation', checkpoint_path) \
+                .option('path', output_path) \
+                .outputMode('append') \
+                .trigger(processingTime='4 minute') \
+                .start()
+
+            if query:
+                print(f"Stream query started for {output_path}")
+            else:
+                print(f"Failed to start stream query for {output_path}")
+
+            return query
+        except Exception as e:
+            print(f"Error starting stream for {output_path}: {e}")
+            return None

@@ -78,7 +78,7 @@ def generate_traffic_camera_data(device_id, timestamp, location, camera_id):
     return {
         'id': uuid.uuid4(),
         'deviceId': device_id,
-        'cameraId': camera_id,  
+        'cameraId': camera_id,
        'timestamp': timestamp,
         'location': location,
         'snapshot': 'Base64EncodedString'
@@ -86,7 +86,7 @@ def generate_traffic_camera_data(device_id, timestamp, location, camera_id):
 
 def generate_weather_data(device_id, timestamp, location):
     return {
-         'id': uuid.uuid4(),   
+         'id': uuid.uuid4(),
          'deviceId': device_id,
          'location': location,
          'timestamp': timestamp,
@@ -131,7 +131,7 @@ def produce_data_to_kafka(producer, topic, data):
 
     producer.flush()
 
-def simulate_journey(producer, device_id):
+def simulate_journey(device_id):
 
     while True:
         vehicle_data = generate_vehicle_data(device_id)
@@ -140,32 +140,43 @@ def simulate_journey(producer, device_id):
         weather_data = generate_weather_data(device_id, vehicle_data['timestamp'], vehicle_data['location'])
         emergency_data = generate_emergency_incident_data(device_id, vehicle_data['timestamp'], vehicle_data['location'])
 
+        all_data = {
+            "vehicle_data": vehicle_data,
+            "gps_data": gps_data,
+            "traffic_camera_data": traffic_camera_data,
+            "weather_data": weather_data,
+            "emergency_data": emergency_data
+        }
+
+        print(all_data)
+
         if (vehicle_data['location'][0] >= BIRMINGHAM_COORDINATES['latitude']
         and vehicle_data['location'][1] <= BIRMINGHAM_COORDINATES['longitude']):
             print('Vehicle has reached Birmingham. Simulation ended...')
             break
 
-        produce_data_to_kafka(producer, VEHICLE_TOPIC, vehicle_data)
-        produce_data_to_kafka(producer, GPS_TOPIC, gps_data)
-        produce_data_to_kafka(producer, TRAFFIC_TOPIC, traffic_camera_data)
-        produce_data_to_kafka(producer, WEATHER_TOPIC, weather_data)
-        produce_data_to_kafka(producer, EMERGENCY_TOPIC, emergency_data)
-
-        time.sleep(5)
+        # produce_data_to_kafka(producer, VEHICLE_TOPIC, vehicle_data)
+        # produce_data_to_kafka(producer, GPS_TOPIC, gps_data)
+        # produce_data_to_kafka(producer, TRAFFIC_TOPIC, traffic_camera_data)
+        # produce_data_to_kafka(producer, WEATHER_TOPIC, weather_data)
+        # produce_data_to_kafka(producer, EMERGENCY_TOPIC, emergency_data)
+        #
+        # time.sleep(5)
 
 if __name__ == "__main__":
-    producer_config = {
-        'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS,
-        'error_cb': lambda err: print(f'kafka error: {err}')
-    }
-    producer = SerializingProducer(producer_config)
-
-    # producer_manager = KafkaProducerManager(producer_config)
-
-    try:
-        simulate_journey(producer, 'Vehicle-Samkons')
-
-    except KeyboardInterrupt:
-        print('Simulation ended by user')
-    except Exception as e:
-        print(f'Unexpected Error occurred : {e}')
+    simulate_journey("123")
+#     producer_config = {
+#         'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS,
+#         'error_cb': lambda err: print(f'kafka error: {err}')
+#     }
+#     producer = SerializingProducer(producer_config)
+#
+#     # producer_manager = KafkaProducerManager(producer_config)
+#
+#     try:
+#         simulate_journey(producer, 'Vehicle-Samkons')
+#
+#     except KeyboardInterrupt:
+#         print('Simulation ended by user')
+#     except Exception as e:
+#         print(f'Unexpected Error occurred : {e}')
